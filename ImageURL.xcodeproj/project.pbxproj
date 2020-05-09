@@ -18,8 +18,6 @@
 		CAF5145E2466996E00667ED0 /* ImageURLCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF5145D2466996E00667ED0 /* ImageURLCache.swift */; };
 		CAF514622466B52500667ED0 /* Decorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF514612466B52500667ED0 /* Decorator.swift */; };
 		CAF514642466B56200667ED0 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF514632466B56200667ED0 /* Reusable.swift */; };
-		CAF514662466D18A00667ED0 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF514652466D18A00667ED0 /* ListDataSource.swift */; };
-		CAF514682466DA1800667ED0 /* CollectionViewMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF514672466DA1800667ED0 /* CollectionViewMapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,8 +34,6 @@
 		CAF5145D2466996E00667ED0 /* ImageURLCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLCache.swift; sourceTree = "<group>"; };
 		CAF514612466B52500667ED0 /* Decorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decorator.swift; sourceTree = "<group>"; };
 		CAF514632466B56200667ED0 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
-		CAF514652466D18A00667ED0 /* ListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSource.swift; sourceTree = "<group>"; };
-		CAF514672466DA1800667ED0 /* CollectionViewMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewMapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +78,6 @@
 				CAF5144C2465BE7800667ED0 /* Assets.xcassets */,
 				CAF5144E2465BE7800667ED0 /* LaunchScreen.storyboard */,
 				CAF514512465BE7800667ED0 /* Info.plist */,
-				CAF514652466D18A00667ED0 /* ListDataSource.swift */,
-				CAF514672466DA1800667ED0 /* CollectionViewMapper.swift */,
 			);
 			path = ImageURL;
 			sourceTree = "<group>";
@@ -160,7 +154,6 @@
 			files = (
 				CAF514482465BE7700667ED0 /* ViewController.swift in Sources */,
 				CAF514582466986B00667ED0 /* ImageCell.swift in Sources */,
-				CAF514662466D18A00667ED0 /* ListDataSource.swift in Sources */,
 				CAF514622466B52500667ED0 /* Decorator.swift in Sources */,
 				CAF514442465BE7700667ED0 /* AppDelegate.swift in Sources */,
 				CAF514642466B56200667ED0 /* Reusable.swift in Sources */,
@@ -168,7 +161,6 @@
 				CAF5145A246698D600667ED0 /* URLImageView.swift in Sources */,
 				CAF514462465BE7700667ED0 /* SceneDelegate.swift in Sources */,
 				CAF5145C2466991900667ED0 /* ImageURLProtocol.swift in Sources */,
-				CAF514682466DA1800667ED0 /* CollectionViewMapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

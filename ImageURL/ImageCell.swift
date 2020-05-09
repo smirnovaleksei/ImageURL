@@ -8,11 +8,11 @@
 
 import UIKit
 
-struct ImageCellViewModel: ViewModelProtocol, XListViewModel {
+struct ImageCellViewModel: ViewModelProtocol {
     let url: String
 }
 
-final class ImageCell: XCollectionCell {
+final class ImageCell: UICollectionViewCell {
 
     // MARK: - Private Properties
 
@@ -39,11 +39,6 @@ final class ImageCell: XCollectionCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         urlImageView.prepareForReuse()
-    }
-
-    override func configure(viewModel: XListViewModel, delegate: XListCellDelegate?) {
-        guard let viewModel = viewModel as? ImageCellViewModel else { return }
-        decorate(model: viewModel)
     }
 }
 
