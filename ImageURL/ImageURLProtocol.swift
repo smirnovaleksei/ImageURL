@@ -10,9 +10,23 @@ import Foundation
 
 final class ImageURLProtocol: URLProtocol {
 
+    // MARK: - Public Properties
+
+    static let session: URLSession = {
+        let config = URLSessionConfiguration.ephemeral
+        config.urlCache = ImageURLCache.current
+        config.protocolClasses = [ImageURLProtocol.classForCoder()]
+        let session = URLSession(configuration: config, delegate: nil, delegateQueue: nil)
+        return session
+    }()
+
+    // MARK: - Private Properties
+
     private var cancelledOrComplete = false
     private var block: DispatchWorkItem?
     private static let queue = OS_dispatch_queue_serial(label: "com.smirnov-development.imageURL-protocol")
+
+    // MARK: - Overridings
 
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -25,7 +39,6 @@ final class ImageURLProtocol: URLProtocol {
     class override func requestIsCacheEquivalent(_ aRequest: URLRequest, to bRequest: URLRequest) -> Bool {
         return false
     }
-
 
     final override func startLoading() {
 
@@ -52,6 +65,8 @@ final class ImageURLProtocol: URLProtocol {
         }
     }
 
+    // MARK: - Private Properties
+
     private func load(with reqURL: URL, urlClient: URLProtocolClient) {
 
         block = DispatchWorkItem(block: {
@@ -70,7 +85,7 @@ final class ImageURLProtocol: URLProtocol {
         ImageURLProtocol.queue.async(execute: block)
     }
 
-    func handle(data: Data?, error: Error?) {
+    private func handle(data: Data?, error: Error?) {
         if let data = data {
             self.complete(with: data)
         } else if let error = error {
@@ -78,11 +93,11 @@ final class ImageURLProtocol: URLProtocol {
         }
     }
 
-    func complete(with cachedResponse: CachedURLResponse) {
+    private func complete(with cachedResponse: CachedURLResponse) {
         complete(with: cachedResponse.data)
     }
 
-    func complete(with data: Data) {
+    private func complete(with data: Data) {
 
         guard let url = request.url, let client = client else {
             return
@@ -100,12 +115,12 @@ final class ImageURLProtocol: URLProtocol {
         client.urlProtocolDidFinishLoading(self)
     }
 
-    func fail(with errorCode: URLError.Code) {
+    private func fail(with errorCode: URLError.Code) {
         let error = URLError(errorCode, userInfo: [:])
         fail(with: error)
     }
 
-    func fail(with error: Error) {
+    private func fail(with error: Error) {
         client?.urlProtocol(self, didFailWithError: error)
     }
 }
