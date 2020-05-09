@@ -14,11 +14,11 @@ final class ViewController: UICollectionViewController {
 
     var imageURLs: [String] = []
 
+    private var dataSource: XCollectionDataSource?
+
     // MARK: - Initializers
 
-    init() {
-        super.init(collectionViewLayout: ViewController.buildLayout())
-    }
+    init() { super.init(collectionViewLayout: ViewController.buildLayout()) }
 
     required init?(coder: NSCoder) { fatalError() }
 
@@ -30,7 +30,13 @@ final class ViewController: UICollectionViewController {
         if let collectionView = collectionView {
             collectionView.backgroundColor = .white
             collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            collectionView.register(ImageCell.self)
+
+            let items = imageURLs.map({ ImageCellViewModel(url: $0) })
+            let itemsDataSource = XCommonDataSource(items: items,
+                                                    viewModelTypes: [ImageCellViewModel.self],
+                                                    mapper: CollectionViewMapper.items)
+            dataSource = XCollectionDataSource(collectionView: collectionView, itemsDataSource: itemsDataSource)
+            collectionView.dataSource = dataSource
         }
     }
 
@@ -47,20 +53,5 @@ final class ViewController: UICollectionViewController {
         layout.minimumInteritemSpacing = 0
         layout.itemSize = CGSize(width: itemSize, height: itemSize)
         return layout
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension ViewController {
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageURLs.count
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
-        cell.decorate(model: .init(url: imageURLs[indexPath.row]))
-        return cell
     }
 }
