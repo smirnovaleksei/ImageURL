@@ -14,6 +14,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScence = scene as? UIWindowScene else { return }
+        ImageURLCache.current.removeAllCachedResponses()
         window = UIWindow(windowScene: windowScence)
         window?.windowScene = windowScence
         let viewController = ViewController()
@@ -37,8 +38,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             "https://webdevetc.com/blog_images/how-to-add-a-gradient-overlay-to-a-background-image-using-just-css-and-html-pj2i500x333.jpg",
             "https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg",
             "https://miac.swiss/gallery/full/126/slider3@2x.jpg",
-            "incorrect URL",
+//            "incorrect URL",
             "https://miac.swiss/gallery/full/126/slider3@2x.jpg",
+            "https://cdn.eso.org/images/large/eso1322a.jpg"
         ]
     }
 }

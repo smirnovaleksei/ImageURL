@@ -33,7 +33,7 @@ final class ImageURLCache: URLCache {
 
     public override func storeCachedResponse(_ response: CachedURLResponse, for request: URLRequest) {
         ImageURLCache.accessQueue.sync {
-            super.storeCachedResponse(response, for: request)
+            return super.storeCachedResponse(response, for: request)
         }
     }
 }

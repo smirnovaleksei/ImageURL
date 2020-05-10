@@ -20,6 +20,20 @@ final class ImageURLProtocol: URLProtocol {
         return session
     }()
 
+    static var executing: [URLSessionDataTask] = [] {
+        didSet {
+            suspended.forEach { (suspendedTask) in
+                if !executing.contains(where: { (executingTask) -> Bool in
+                    executingTask.currentRequest == suspendedTask.currentRequest
+                }) {
+                    suspendedTask.resume()
+                }
+            }
+        }
+    }
+
+    static var suspended: [URLSessionDataTask] = []
+
     // MARK: - Private Properties
 
     private var cancelledOrComplete = false

@@ -12,7 +12,20 @@ final class URLImageView: UIImageView, URLSessionDataDelegate {
 
     // MARK: - Private Properties
 
-    private var task: URLSessionDataTask?
+    private var task: URLSessionDataTask? {
+        didSet {
+            if task != nil {
+                if ImageURLProtocol.executing.contains(where: { (executingTask) -> Bool in
+                    executingTask.currentRequest == task?.currentRequest
+                }) {
+                    ImageURLProtocol.suspended.append(task!)
+                    return
+                }
+                ImageURLProtocol.executing.append(task!)
+                task?.resume()
+            }
+        }
+    }
     private var taskId: Int?
 
     // MARK: - Public Methods
@@ -31,11 +44,13 @@ final class URLImageView: UIImageView, URLSessionDataDelegate {
 
             task = ImageURLProtocol.session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
                 self?.complete(taskId: id, data: data, response: response, error: error)
+                DispatchQueue.main.async {
+                    ImageURLProtocol.executing.removeAll(where: { $0.taskIdentifier == id })
+                }
             })
 
             id = task?.taskIdentifier
             taskId = id
-            task?.resume()
         }
     }
 
