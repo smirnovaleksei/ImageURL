@@ -22,17 +22,24 @@ final class ImageURLProtocol: URLProtocol {
 
     static var executing: [URLSessionDataTask] = [] {
         didSet {
-            suspended.forEach { (suspendedTask) in
-                if !executing.contains(where: { (executingTask) -> Bool in
-                    executingTask.currentRequest == suspendedTask.currentRequest
-                }) {
-                    suspendedTask.resume()
-                }
+            for suspendedTask in suspended
+                where !executing.contains(where: { $0.currentRequest == suspendedTask.currentRequest }) {
+                suspendedTask.resume()
+                suspended.removeAll(where: { $0 == suspendedTask })
+            }
+            if executing.isEmpty {
+                print("executing dealloc")
             }
         }
     }
 
-    static var suspended: [URLSessionDataTask] = []
+    static var suspended: [URLSessionDataTask] = [] {
+        didSet {
+            if suspended.isEmpty {
+                print("suspended dealloc")
+            }
+        }
+    }
 
     // MARK: - Private Properties
 

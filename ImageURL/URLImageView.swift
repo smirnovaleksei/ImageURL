@@ -14,15 +14,13 @@ final class URLImageView: UIImageView, URLSessionDataDelegate {
 
     private var task: URLSessionDataTask? {
         didSet {
-            if task != nil {
-                if ImageURLProtocol.executing.contains(where: { (executingTask) -> Bool in
-                    executingTask.currentRequest == task?.currentRequest
-                }) {
-                    ImageURLProtocol.suspended.append(task!)
+            if let task = task {
+                if ImageURLProtocol.executing.contains(where: { $0.currentRequest == task.currentRequest }) {
+                    ImageURLProtocol.suspended.append(task)
                     return
                 }
-                ImageURLProtocol.executing.append(task!)
-                task?.resume()
+                ImageURLProtocol.executing.append(task)
+                task.resume()
             }
         }
     }
