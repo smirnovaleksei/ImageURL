@@ -24,7 +24,9 @@ final class ImageURLProtocol: URLProtocol {
         didSet {
             for suspendedTask in suspended
                 where !executing.contains(where: { $0.currentRequest == suspendedTask.currentRequest }) {
-                suspendedTask.resume()
+                    if suspendedTask.state != .canceling {
+                        suspendedTask.resume()
+                    }
                 suspended.removeAll(where: { $0 == suspendedTask })
             }
             if executing.isEmpty {
@@ -41,12 +43,16 @@ final class ImageURLProtocol: URLProtocol {
         }
     }
 
+    static let accessQueue = OS_dispatch_queue_serial(label: "com.smirnov-development.image-url-protocol-access-arrays",
+                                                      qos: .userInitiated
+    )
+
     // MARK: - Private Properties
 
     private var cancelledOrComplete = false
     private var block: DispatchWorkItem?
-    private static let queue = OS_dispatch_queue_serial(label: "com.smirnov-development.imageURL-protocol")
-
+    private static let queue = OS_dispatch_queue_concurrent(label: "com.smirnov-development.imageURL-protocol")
+    
     // MARK: - Overridings
 
     override class func canInit(with request: URLRequest) -> Bool {

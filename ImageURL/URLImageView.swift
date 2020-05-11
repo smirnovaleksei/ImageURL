@@ -31,24 +31,25 @@ final class URLImageView: UIImageView, URLSessionDataDelegate {
     func render(url: String) {
         assert(task == nil || task?.taskIdentifier != taskId)
         if let url = URL(string: url) {
+            ImageURLProtocol.accessQueue.async {
+                var id: Int?
 
-            var id: Int?
+                let request = URLRequest(
+                    url: url,
+                    cachePolicy: .returnCacheDataElseLoad,
+                    timeoutInterval: 30
+                )
 
-            let request = URLRequest(
-                url: url,
-                cachePolicy: .returnCacheDataElseLoad,
-                timeoutInterval: 30
-            )
+                self.task = ImageURLProtocol.session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
+                    self?.complete(taskId: id, data: data, response: response, error: error)
+                    ImageURLProtocol.accessQueue.async {
+                        ImageURLProtocol.executing.removeAll(where: { $0.taskIdentifier == id })
+                    }
+                })
 
-            task = ImageURLProtocol.session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
-                self?.complete(taskId: id, data: data, response: response, error: error)
-                DispatchQueue.main.async {
-                    ImageURLProtocol.executing.removeAll(where: { $0.taskIdentifier == id })
-                }
-            })
-
-            id = task?.taskIdentifier
-            taskId = id
+                id = self.task?.taskIdentifier
+                self.taskId = id
+            }
         }
     }
 
