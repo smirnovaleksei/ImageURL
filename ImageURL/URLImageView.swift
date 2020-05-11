@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class URLImageView: UIImageView, URLSessionDataDelegate {
+final class URLImageView: UIImageView {
 
     // MARK: - Private Properties
 
@@ -24,6 +24,7 @@ final class URLImageView: UIImageView, URLSessionDataDelegate {
             }
         }
     }
+    
     private var taskId: Int?
 
     // MARK: - Public Methods
